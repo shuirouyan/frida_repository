@@ -24,6 +24,23 @@ function hook() {
             console.log('w ret value is ' + ret);
             return false;
         };
+
+        // public class CheckRoot {
+        //     private static String LOG_TAG;
+        
+        //     static {
+        //         g.b.a.a.a("pns-2.13.2.1-LogOnlineStandardCuumRelease_alijtca_plus");
+        //         LOG_TAG = "CheckRoot";
+        //     }
+        
+        //     private static native boolean checkDeviceDebuggable();
+        
+        //     private static native boolean checkRootPathSU();
+        
+        //     private static native boolean checkSuperuserApk();
+        
+        //     public static native String isDeviceRooted();
+        // }
         // LOAD:0000000000000E98		                           Java_com_mobile_auth_gatewayauth_utils_security_CheckRoot_checkDeviceDebuggable__,\
         // LOAD:0000000000001078		                           Java_com_mobile_auth_gatewayauth_utils_security_CheckRoot_isDeviceRooted__,\
         // LOAD:00000000000014F8		                           Java_com_mobile_auth_gatewayauth_utils_security_CheckRoot_checkRootPathSU__,\
