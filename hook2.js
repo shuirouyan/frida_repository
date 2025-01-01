@@ -428,36 +428,15 @@ function hook5() {
     let a = Module.getBaseAddress('libc.so')
     console.log(`${a}`)
     let resu = a.add(0x7ffff5762620)
-    let alog = new NativeFunction(resu, null)
-    console.log(`aloglog:${alog}`)
+    
 
-    var module = Process.getModuleByName('haha.so');
-
-    // so中的函数的地址，我这里是按64位直接写了
-    var funcPtr = module.base.add(0x185cc);
-    console.log("Function address: " + funcPtr);
-
-    var func = new NativeFunction(funcPtr, 'pointer', ['int', 'pointer'], {
-        exceptions: 'propagate'
-    });
-
-    // 字符串数组
-    var stringArray = ['asdkj12lk31', 'asdjlajdlajksj', 'sajfljkflka231'];
-    var arrayPtr = Memory.alloc(Process.pointerSize * stringArray.length);
-    for (var i = 0; i < stringArray.length; i++) {
-        var strPtr = Memory.allocUtf8String(stringArray[i]);
-        Memory.writePointer(arrayPtr.add(Process.pointerSize * i), strPtr);
-    }
-
-    // 创建参数int 和那个array
-    var arg1 = 123;
-    var arg2 = arrayPtr;
-
-    var result = func(arg1, arg2);
-
-    console.log("Function result: " + result);
-
-
+    let h = Java.use("g.r.f.a.a.j.p.h");
+    h["b"].implementation = function (str, str2) {
+        console.log('b is called' + ', ' + 'str: ' + str + ', ' + 'str2: ' + str2);
+        let ret = this.b(str, str2);
+        console.log('b ret value is ' + ret);
+        return ret;
+    };
 
 }
 
