@@ -473,6 +473,31 @@ function ahooktest() {
 }
 
 function hook6() {
+
+    Interceptor.attach(Module.findExportByName('libc.so.6', 'kill'), {
+        onEnter: function (args) {
+            var pid = args[0].toInt32();  // 获取进程 ID
+            var sig = args[1].toInt32();  // 获取信号
+
+            // 打印调用信息
+            console.log('kill() called with pid: ' + pid + ', sig: ' + sig);
+
+            // 阻止杀死某个特定的进程，例如 PID 为 1234 的进程
+            if (pid == 1234) {
+                console.log('Blocking kill() for pid 1234');
+                this.skip = true;  // 设置标记，跳过执行原 kill 函数
+            }
+        },
+        onLeave: function (retval) {
+            if (this.skip) {
+                // 修改返回值来避免进程被杀死
+                console.log('kill() blocked, returning success.');
+                retval.replace(0);  // 0 表示成功，不会杀死进程
+            }
+        }
+    });
+
+
     var dlopenAdd = Module.findExportByName("libdl.so", "android_dlopen_ext");
     Interceptor.attach(dlopenAdd, {
         onEnter: function (args) {
