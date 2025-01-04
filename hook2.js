@@ -473,7 +473,14 @@ function ahooktest() {
 }
 
 function hook6() {
+    var dlopenAdd = Module.findExportByName("libdl.so", "android_dlopen_ext");
+    Interceptor.attach(dlopenAdd, {
+        onEnter: function (args) {
+            console.log("Loaded dlopen with -> " + args[0].readCString());
+        }, onLeave(retVal) {
 
+        }
+    })
 }
 
 function main() {
