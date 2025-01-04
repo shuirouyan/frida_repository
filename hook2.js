@@ -428,7 +428,7 @@ function hook5() {
     let a = Module.getBaseAddress('libc.so')
     console.log(`${a}`)
     let resu = a.add(0x7ffff5762620)
-    
+
 
     let h = Java.use("g.r.f.a.a.j.p.h");
     h["b"].implementation = function (str, str2) {
@@ -472,9 +472,13 @@ function ahooktest() {
 
 }
 
+function hook6() {
+
+}
+
 function main() {
     Java.perform(function () {
-        hook5();
+        hook6();
     })
 }
 
