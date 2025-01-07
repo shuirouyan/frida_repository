@@ -22,12 +22,38 @@ function method02() {
         for (let i = 0; i < symbols.length; i++) {
             let symbol = symbols[i]
             console.log(`symbol.name:${symbol.name}`)
-            if (symbol.name.indexOf('CheckJNI') == -1 && symbol.name.indexOf('RegisterNatives') != -1) {
+            if (symbol.name.indexOf('CheckJNI') == -1 
+            && symbol.name.indexOf('RegisterNatives') != -1
+            && symbol.name.indexOf('art') >= 0
+            && symbol.name.indexOf('JNI') >= 0) {
                 registerNativesAddr = symbol.address;
             }
         }
     }
     console.log(`registerNativesAddr:${registerNativesAddr}`)
+
+    if(registerNativesAddr) {
+        console.log(`date:${new Date()}`)
+        console.log(`class_name:${JSON.stringify(Java.vm.tryGetEnv())}`)
+        Interceptor.attach(registerNativesAddr, {
+            onEnter: function (args) {
+                let env = args[0]
+                let java_class = args[1]
+                let class_name = Java.vm.tryGetEnv().getClassName(java_class)
+                // target class 
+                // Java_com_mobile_auth_gatewayauth_utils_security_CheckRoot_checkDeviceDebuggable__
+                let target_class = 'com.mobile.auth.gatewayauth.utils.security.CheckRoot'
+                if(class_name === target_class) {
+                    console.log(`RegisterNatives count:${args[3]}`)
+                }
+            },
+            onLeave: function (retval) {
+
+            }
+        })
+
+    }
+
 }
 
 function method03() {
@@ -56,8 +82,9 @@ function method03() {
         }
 
     }
-    let libName = 'libyuanrenxue_native.so'
-    // Module.load(libName)
+    // let libName = '/data/app/com.touchtv.touchtv-tUIYUpE1-RCIE_w0Oct9rA==/lib/arm64/libpns-2.13.2.1-LogOnlineStandardCuumRelease_alijtca_plus.so'
+    // let load_so = Module.load(libName)
+    // console.log(`load_so module:${load_so}`)
     // let libProcess = Process.getModuleByName(libName)
     // console.log(`libProcess:${libProcess}`)
     const fgetsPtr = Module.findExportByName(null, 'fgets');
@@ -82,7 +109,7 @@ function method03() {
             if (retval.toInt32() !== 0) {
                 // 输出拦截的字符串
                 var result = Memory.readUtf8String(this.buffer);
-                if (result.indexOf('.so') != -1) {
+                if (result.indexOf('pn') != -1) {
                     console.log("  Original fgets Output: " + result);
                 }
 
@@ -97,10 +124,168 @@ function method03() {
     });
 
 }
+
+function method04() {
+    let funcName = ''
+    let _symbols = Module.enumerateSymbols()
+    for (let i = 0; i < _symbols.length; i++) {
+        let symbol = _symbols[i]
+        // console.log(`symbol.name:${symbol.name}`)
+        if (symbol.name.indexOf(funcName) != -1) {
+            console.log(`module name:${module.name} enumerateSymbols symbol.name:${symbol.name} JSON.stringify:{JSON.stringify(_symbols)}`)
+        }
+    }
+}
+
+function method05() {
+    let dlsym_addr = Module.findExportByName('libdl.so', 'dlsym')
+    let args1;
+    console.log(`dlsym_addr:${dlsym_addr}`)
+    Interceptor.attach(dlsym_addr, {
+        onEnter: function (args) {
+            args1 = args[1]
+        },
+        onLeave: function (retval) {
+            if(args1 != null && args1.readCString().indexOf('JNI') != -1){
+                let process_module = Process.getModuleByAddress(retval)
+                console.log(`======> ${args1.readCString()} retval:${retval}, module.name:${process_module.name}`)
+
+            }
+
+        }
+    })
+}
+
+function method06() {
+    let module_name = Process.getModuleByName('libart.so')
+    console.log(`module_name:${module_name}`)
+    let registerNativesAddr;
+    if (module_name) {
+        let symbols = module_name.enumerateSymbols()
+        for (let i = 0; i < symbols.length; i++) {
+            let symbol = symbols[i]
+            // console.log(`symbol.name:${symbol.name}`)
+            if (symbol.name.indexOf('CheckJNI') == -1 
+            && symbol.name.indexOf('RegisterNatives') != -1) {
+                registerNativesAddr = symbol.address;
+            }
+        }
+    }
+    console.log(`registerNativesAddr:${registerNativesAddr}`)
+
+    if(registerNativesAddr != null) {
+        Interceptor.attach(registerNativesAddr, {
+            onEnter: function (args) {
+                let env = Java.vm.tryGetEnv()
+                // class name
+                let class_name = env.getClassName(args[1])
+                // 注册函数个数
+                let method_count = args[3].toInt32()
+                // 函数名称
+                let method_name = args[2].readPointer().readCString()
+                // 函数签名
+                let signature = args[2].add(Process.pointerSize).readPointer().readCString();
+                // 函数地址
+                let fn_ptr = args[2].add(Process.pointerSize * 2).readPointer()
+                // 函数地址模块 
+                let module = Process.findModuleByAddress(fn_ptr)
+                console.log(`class name:${class_name}, method_count:${method_count}, method name:${method_name}, 
+                signature:${signature}, module:${JSON.stringify(module)}`)
+            },
+            onLeave: function (retval) {
+                
+    
+            }
+        })
+    }
+    
+}
+
+
+function method07() {
+    let module_name = Process.getModuleByName('libart.so')
+    console.log(`module_name:${module_name}`)
+    let registerNativesAddr;
+    if (module_name) {
+        let symbols = module_name.enumerateSymbols()
+        for (let i = 0; i < symbols.length; i++) {
+            let symbol = symbols[i]
+            // console.log(`symbol.name:${symbol.name}`)
+            if (symbol.name.indexOf('CheckJNI') == -1 
+            && symbol.name.indexOf('RegisterNatives') != -1) {
+                registerNativesAddr = symbol.address;
+            }
+        }
+    }
+    console.log(`registerNativesAddr:${registerNativesAddr}`)
+
+    if(registerNativesAddr != null) {
+        Interceptor.attach(registerNativesAddr, {
+            onEnter: function (args) {
+                let env = Java.vm.tryGetEnv()
+                // class name
+                let class_name = env.getClassName(args[1])
+                // 注册函数个数
+                let method_count = args[3].toInt32()
+                for (let i = 0; i<method_count; i++) {
+                    // 函数名称
+                    let method_name = args[2].add(Process.pointerSize * 3 * i).readPointer().readCString()
+                    // 函数签名
+                    let signature = args[2].add(Process.pointerSize * 3 * i).add(Process.pointerSize).readPointer().readCString();
+                    // 函数地址
+                    let fn_ptr = args[2].add(Process.pointerSize * 3 * i).add(Process.pointerSize * 2).readPointer()
+                    // 函数地址模块 
+                    let module = Process.findModuleByAddress(fn_ptr)
+                    console.log(`class name:${class_name}, method_count:${method_count}, method name:${method_name}, 
+                    signature:${signature}, module:${JSON.stringify(module)}`)
+                }
+                
+            },
+            onLeave: function (retval) {
+                
+    
+            }
+        })
+    }
+    let a = Java.use("g.b.a.a");
+    a["a"].implementation = function (str) {
+        console.log('a is called' + ', ' + 'str: ' + str);
+        let ret = this.a(str);
+        console.log('a ret value is ' + ret);
+        return ret;
+    };
+
+}
+
+function method08() {
+    var dlopen = Module.findExportByName(null, "dlopen");
+    var android_dlopen_ext = Module.findExportByName(null, "android_dlopen_ext");
+    Interceptor.attach(dlopen, {
+        onEnter: function (args) {
+            var path_ptr = args[0];
+            var path = ptr(path_ptr).readCString();
+            console.log("[dlopen:]", path);
+        },
+        onLeave: function (retval) {
+        }
+    });
+    Interceptor.attach(android_dlopen_ext, {
+        onEnter: function (args) {
+            var path_ptr = args[0];
+            var path = ptr(path_ptr).readCString();
+            console.log("[dlopen_ext:]", path);
+        },
+        onLeave: function (retval) {
+        }
+    });
+}
+
+
+
 function main() {
 
     Java.perform(function () {
-        method03();
+        method08();
     })
 
 }
