@@ -1,5 +1,5 @@
 import frida
-import requests, json
+import requests, json, re, brotli
 
 hook_code = """
 rpc.exports = {
@@ -96,14 +96,50 @@ def remote_interface():
         remote_result = requests.get(url=url, headers=headers)
         # remote_result.content.decode('utf-8')
 
-        print(f'remote_result:{remote_result.text}, status:{remote_result.status_code} Content-Type: {remote_result.headers.get("Content-Type")}')
-        return remote_result.text
+        # print(f'remote_result:{remote_result.text}, status:{remote_result.status_code} Content-Type: {remote_result.headers.get("Content-Type")}')
+        print(f'url: {remote_result.request.url} headers:{remote_result.headers}')
+        remote_result_str=decode_content(remote_result)
+        json_loads_msg=json.loads(remote_result_str)
+        title_list = [item['title'] for item in json_loads_msg['data']['items']]
+        print(f'byte2str:{remote_result_str},title items:{title_list}, length:{len(title_list)}')
+        return remote_result_str
     else:
         return ""
+
+def decode_content(response):
+    content_type = response.headers.get('Content-Type', '')
+    charset_match = re.search(r'charset=(.*)', content_type)
+    if charset_match:
+        encoding = charset_match.group(1)
+    else:
+        encoding = 'utf-8'
+    try:
+        return response.content.decode(encoding)
+    except UnicodeDecodeError:
+        print(f"UnicodeDecodeError when decoding using {encoding}")
+        return None
+
+
+
+def decompress_content(response):
+    '''
+    这个方法不用，返回值内容解压缩失败，使用上面的那个decode_content方法，注意返回参数response的Content-Encoding，如果是br，就是使用了压缩算法，返回值需要做处理
+    '''
+    try:
+        if response.headers.get('Content-Encoding') == 'br':
+            return brotli.decompress(response.content)
+        else:
+            return response.content
+    except brotli.error as e:
+        print(f"Error decompressing content with Brotli: {e}")
+        # 可以根据需要返回 None 或采取其他处理方式
+        return None
+
+
 
 if __name__ == '__main__':
     # pass
     remote_interface()
     # processes = frida.get_usb_device().enumerate_processes()
     # for process in processes:
-        # print(f"Process name: {process.name}, pid: {process.pid}")
+    #     print(f"Process name: {process.name}, pid: {process.pid}")
