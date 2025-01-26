@@ -12,7 +12,13 @@ function method01() {
         console.log('a ret value is ' + alog.toString());
         return ret;
     };
-
+    let w = Java.use("com.bytedance.sdk.account.l.a.w");
+    w["$init"].overload('java.lang.String', 'java.lang.String', 'int').implementation = function (str, str2, i2) {
+        console.log('$init is called' + ', ' + 'str: ' + str + ', ' + 'str2: ' + str2 + ', ' + 'i2: ' + i2);
+        let ret = this.$new(str, str2, i2);
+        console.log('$init ret value is ' + ret);
+        return ret;
+    };
 }
 
 
