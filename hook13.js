@@ -6,7 +6,7 @@ function method01() {
     let y = Java.use("com.bytedance.sdk.account.l.b.y");
     y["a"].overload('com.bytedance.sdk.account.l.a.w').implementation = function (wVar) {
 
-        console.log('a is called' + ', ' + ' wVar: ' + wVar);
+        console.log('a is called' + ', ' + ' wVar: ' + wVar.f45865a);
         let ret = this.a(wVar);
         let alog = json_obj.$new(ret)
         console.log('a ret value is ' + alog.toString());
