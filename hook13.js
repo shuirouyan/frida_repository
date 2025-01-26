@@ -30,14 +30,6 @@ function method01() {
         return ret;
     };
 
-    let e = Java.use("com.bytedance.sdk.account.api.e");
-    e["b"].implementation = function (str) {
-        console.log('b is called' + ', ' + 'str: ' + str);
-        let ret = this.b(str);
-        console.log('b ret value is ' + ret);
-        return ret;
-    };
-
 }
 
 
