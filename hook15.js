@@ -86,6 +86,15 @@ function method01() {
         return ret;
     };
 
+    Java.choose('com.zj.wuaipojie2025.TO$Companion', {
+        onMatch(instance) {
+            console.log(`instance:${instance}`)
+            let re = instance.db('cYoiUd2BfEDc/V9e4LdciBz9Mzwzs3yr0kgrLA==')
+            console.log(`==========>result:${re}`)
+        }, onComplete() {
+            console.log(`complete:${new Date()}`)
+        }
+    })
 }
 
 
