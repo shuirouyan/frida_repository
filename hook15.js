@@ -52,6 +52,14 @@ function method01() {
         console.log('setFlags ret value is ' + ret);
         return ret;
     };
+
+    let FoldFragment2$onViewCreated$gestureDetector$1 = Java.use("com.zj.wuaipojie2025.FoldFragment2$onViewCreated$gestureDetector$1");
+    FoldFragment2$onViewCreated$gestureDetector$1["onScroll"].implementation = function (motionEvent, e2, f, f2) {
+        console.log('onScroll is called' + ', ' + 'motionEvent: ' + motionEvent + ', ' + 'e2: ' + e2 + ', ' + 'f: ' + f + ', ' + 'f2: ' + f2);
+        let ret = this.onScroll(motionEvent, e2, f, f2);
+        console.log('onScroll ret value is ' + ret);
+        return ret;
+    };
 }
 
 
