@@ -8,6 +8,16 @@ function method01() {
         console.log('checkNotNullExpressionValue ret value is ' + ret);
         return ret;
     };
+
+
+
+    let ViewPager2 = Java.use("androidx.viewpager2.widget.ViewPager2");
+    ViewPager2["setUserInputEnabled"].implementation = function (z) {
+        console.log('setUserInputEnabled is called' + ', ' + 'z: ' + z);
+        let ret = this.setUserInputEnabled(true);
+        console.log('setUserInputEnabled ret value is ' + ret);
+        return ret;
+    };
 }
 
 
