@@ -43,6 +43,15 @@ function method01() {
         console.log('transcodeAndWrite ret value is ' + ret);
         return ret;
     };
+
+
+    let Builder = Java.use("androidx.activity.result.IntentSenderRequest$Builder");
+    Builder["setFlags"].implementation = function (i, i2) {
+        console.log('setFlags is called' + ', ' + 'i: ' + i + ', ' + 'i2: ' + i2);
+        let ret = this.setFlags(i, i2);
+        console.log('setFlags ret value is ' + ret);
+        return ret;
+    };
 }
 
 
