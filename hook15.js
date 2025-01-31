@@ -76,6 +76,16 @@ function method01() {
         console.log('s ret value is ' + ret);
         return ret;
     };
+
+
+    // let Companion = Java.use("com.zj.wuaipojie2025.TO$Companion");
+    Companion["db"].implementation = function (value) {
+        console.log('db is called' + ', ' + 'value: ' + value);
+        let ret = this.db(value);
+        console.log('db ret value is ' + ret);
+        return ret;
+    };
+
 }
 
 
