@@ -26,6 +26,16 @@ function method01() {
         console.log('findViewById ret value is ' + ret);
         return ret;
     };
+
+
+
+    let ProfileInstaller = Java.use("androidx.profileinstaller.ProfileInstaller");
+    ProfileInstaller["transcodeAndWrite"].implementation = function (assetManager, str, packageInfo, file, str2, executor, diagnosticsCallback) {
+        console.log('transcodeAndWrite is called' + ', ' + 'assetManager: ' + assetManager + ', ' + 'str: ' + str + ', ' + 'packageInfo: ' + packageInfo + ', ' + 'file: ' + file + ', ' + 'str2: ' + str2 + ', ' + 'executor: ' + executor + ', ' + 'diagnosticsCallback: ' + diagnosticsCallback);
+        let ret = this.transcodeAndWrite(assetManager, str, packageInfo, file, str2, executor, diagnosticsCallback);
+        console.log('transcodeAndWrite ret value is ' + ret);
+        return ret;
+    };
 }
 
 
