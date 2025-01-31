@@ -18,6 +18,14 @@ function method01() {
         console.log('setUserInputEnabled ret value is ' + ret);
         return ret;
     };
+
+    let AppCompatActivity = Java.use("androidx.appcompat.app.AppCompatActivity");
+    AppCompatActivity["findViewById"].implementation = function (i) {
+        console.log('findViewById is called' + ', ' + 'i: ' + i);
+        let ret = this.findViewById(i);
+        console.log('findViewById ret value is ' + ret);
+        return ret;
+    };
 }
 
 
