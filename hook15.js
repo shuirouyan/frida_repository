@@ -9,7 +9,14 @@ function method01() {
     //     return ret;
     // };
 
+    var Log = Java.use("android.util.Log");
 
+    // Hook Log.d 方法
+    Log.d.overload('java.lang.String', 'java.lang.String').implementation = function (tag, message) {
+        console.log("Log.d called: " + tag + ", " + message);
+        // 调用原始方法
+        return this.d(tag, message);
+    };
 
     let ViewPager2 = Java.use("androidx.viewpager2.widget.ViewPager2");
     ViewPager2["setUserInputEnabled"].implementation = function (z) {
