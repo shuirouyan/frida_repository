@@ -68,6 +68,14 @@ function method01() {
         console.log('db ret value is ' + ret);
         return ret;
     };
+
+    let SPU = Java.use("com.zj.wuaipojie2025.SPU");
+    SPU["s"].implementation = function (context, i, value) {
+        console.log('s is called' + ', ' + 'context: ' + context + ', ' + 'i: ' + i + ', ' + 'value: ' + value);
+        let ret = this.s(context, i, value);
+        console.log('s ret value is ' + ret);
+        return ret;
+    };
 }
 
 
