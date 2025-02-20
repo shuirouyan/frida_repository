@@ -104,6 +104,11 @@ function method01() {
     //         console.log(`onComplete:${new Date()}`)
     //     }
     // })
+
+    Java.scheduleOnMainThread(function () {
+        console.log(`onComplete:${new Date()}`)
+    })
+    
 }
 
 
