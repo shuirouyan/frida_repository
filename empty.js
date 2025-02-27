@@ -21,7 +21,7 @@ function main() {
 
     Java.perform(function () {
         method01();
-        // hook_kill();
+        hook_kill();
     })
 
 }
