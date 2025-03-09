@@ -41,7 +41,7 @@ function method07() {
                     let module_so = Process.findModuleByAddress(fn_ptr)
                     console.log(`fn_ptr:${fn_ptr}, module_so:${JSON.stringify(module_so)}`)
                     console.log(`class name:${class_name}, method_count:${method_count}, method name:${method_name}, 
-                    signature:${signature}, module:${JSON.stringify(fn_ptr.sub(module_so.base))}`)
+                    signature:${signature}, module:${JSON.stringify(fn_ptr.sub(0x40600))}`)
                 }
 
             },
