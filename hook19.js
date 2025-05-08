@@ -63,6 +63,14 @@ function hook_login() {
         console.log('getToken ret value is ' + ret);
         return ret;
     };
+
+    let SoftMoreDetailDialog = Java.use("com.disanrenti.threedbody.modules.soft.dialog.SoftMoreDetailDialog");
+    SoftMoreDetailDialog["httpGetListData"].implementation = function (softDetailBean) {
+        console.log('httpGetListData is called' + ', ' + 'softDetailBean: ' + softDetailBean);
+        let ret = this.httpGetListData(softDetailBean);
+        console.log('httpGetListData ret value is ' + ret);
+        return ret;
+    };
 }
 
 function main() {
