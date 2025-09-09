@@ -155,9 +155,24 @@ function method01() {
         return ret;
     };
 
-
-
+    // let d = Java.use("rb0.d");
+    d["b"].implementation = function (str) {
+        console.log('b is called' + ', ' + 'str: ' + str);
+        let ret = this.b(str);
+        console.log('b ret value is ' + ret);
+        return ret;
+    };
+    let aa = Java.use("rb0.a");
+    aa["a"].implementation = function (byteArray) {
+        console.log('a is called' + ', ' + 'byteArray: ' + byteArray);
+        let ret = this.a(byteArray);
+        console.log('a ret value is ' + ret);
+        return ret;
+    };
     
+
+
+
 }
 
 function hook_kill() {
