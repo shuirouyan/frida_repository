@@ -1,4 +1,4 @@
-## Custom Frida Hook 
+## Custom Frida Hook (virtual environment path /d/temp/python/myenv1)
 1. hooking android app
 2. hook[number].js文件是frida hook的脚本，这些是自定义的脚本，包括查找so文件中的函数地址
 3. hook19.js是hook 3dbody的脚本
