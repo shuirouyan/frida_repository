@@ -2,7 +2,8 @@ import requests
 
 def pre_method01(phone):
     # url = f"http://localhost:8200/yupao/17767383234?nonce=204560&timestamp=1756889115785"
-    url = f"http://localhost:8200/yupao/{phone}"
+    # url = f"http://localhost:8200/yupao/{phone}"
+    url = f"http://192.168.159.10:8200/yupao/{phone}"
     resp = requests.get(url=url)
     json_data = resp.json()
     nonce = str(json_data["nonce"])
@@ -57,4 +58,4 @@ def send_method01(phone):
 
 
 if __name__ == "__main__":
-    send_method01('17777777777')
+    send_method01('15579665017')
