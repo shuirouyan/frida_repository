@@ -114,6 +114,9 @@ async def get_page_content():
             if resp.json() != None:
                 datas = resp.json()["data"]["contentDetail"]["html"]
                 logging.info("datas:{}".format(datas))
+                local_url = f"http://localhost:8000/v4/save?id={contId}"
+                local_result_resp = requests.post(url=local_url, json=datas)
+                logging.info(f"local_resp:{local_result_resp}")
 
 
 async def get_content_one():
