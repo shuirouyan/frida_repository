@@ -2,6 +2,8 @@ import json, requests
 
 import logging, asyncio
 
+from urllib.parse import quote
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -110,11 +112,13 @@ async def get_page_content():
             logging.info(f"Requesting content for {contId}, url:{url}")
             # await asyncio.sleep(3)
             resp = requests.get(url=url, headers=headers)
-            # logging.info("content response:{}".format(resp.text))
+            logging.info("content response:{}".format(resp.text))
             if resp.json() != None:
-                datas = resp.json()["data"]["contentDetail"]["html"]
+                detail = resp.json()["data"]["contentDetail"]
+                datas = detail["html"]
+                name = quote(detail["name"])
                 logging.info("datas:{}".format(datas))
-                local_url = f"http://localhost:8000/v4/save?id={contId}"
+                local_url = f"http://localhost:8000/v4/save?id={contId}&name={name}"
                 local_result_resp = requests.post(url=local_url, json=datas)
                 logging.info(f"local_resp:{local_result_resp}")
 
