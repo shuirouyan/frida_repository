@@ -163,7 +163,8 @@ async def get_content_one():
     }
     logging.info(f"Requesting content for {contId}, url:{url}")
     await asyncio.sleep(3)
-    resp = requests.get(url=url, headers=headers, proxies=proxies, verify=False)
+    # resp = requests.get(url=url, headers=headers, proxies=proxies, verify=False)
+    resp = requests.get(url=url, headers=headers, verify=False)
     logging.info("content response:{}".format(resp.text))
 
 
