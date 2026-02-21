@@ -169,4 +169,5 @@ async def get_content_one():
 
 
 if __name__ == "__main__":
-    asyncio.run(get_page_content())
+    for item in range(10):
+        asyncio.run(get_page_content())
