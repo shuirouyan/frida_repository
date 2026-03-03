@@ -118,7 +118,7 @@ async def get_page_content():
                 datas = detail["html"]
                 name = quote(detail["name"])
                 logging.info("datas:{}".format(datas))
-                local_url = f"http://localhost:8000/v4/save?id={contId}&name={name}"
+                local_url = f"http://localhost:8000/v5/save?id={contId}&name={name}"
                 local_result_resp = requests.post(url=local_url, json=datas)
                 logging.info(f"local_resp:{local_result_resp}")
 
