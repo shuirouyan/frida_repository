@@ -64,11 +64,15 @@ async def get_home_page():
     }
     resp = requests.post(url=url, headers=headers, json=payload)
     name_list = []
-    contId = {}
+    contId = {"contId": []}
     if resp.json() != None:
         datas = resp.json()["data"]["pageInfo"]["list"]
-        name_list = [{item["contId"]: item["name"]} for item in datas]
-        contId = {"contId": [item["contId"] for item in datas]}
+        temp_data = json.dumps(datas, ensure_ascii=False)
+        logging.info("datas:{}".format(temp_data))
+        for item in datas:
+            if "contId" in item:
+                name_list = [{item["contId"]: item["name"]}]
+                contId["contId"].append(str(item["contId"]))
     # logging.info("resp:{}".format(resp.text))
     contId["contId"] = sorted(contId["contId"])
     logging.info("name_list:{},contId:{}".format(name_list, contId))
@@ -169,5 +173,6 @@ async def get_content_one():
 
 
 if __name__ == "__main__":
+    # asyncio.run(get_home_page())
     for item in range(1):
         asyncio.run(get_page_content())
